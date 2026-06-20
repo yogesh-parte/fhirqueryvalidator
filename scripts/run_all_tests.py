@@ -15,11 +15,15 @@ def main():
 
     print(f"Testing {len(test_queries)} queries across {len(public_servers)} public servers (no auth)...\n")
 
-    for server in public_servers:
-        try:
-            print(f"--- {server['name']} ({server['key']}) ---")
-            print(f"    Base: {server['base_url']}")
+    passed = 0
+    failed = 0
+    errors = 0
 
+    for server in public_servers:
+        print(f"--- {server['name']} ({server['key']}) ---")
+        print(f"    Base: {server['base_url']}")
+
+        try:
             service = FhirValidatorService(
                 metadata_url=server["metadata_url"],
                 server_base=server["base_url"],
@@ -30,18 +34,31 @@ def main():
                 full_query_url = f"{server['base_url']}/{test['query']}"
                 result = service.validate_query(full_query_url)
 
-                if result["valid"]:
-                    print("  Result: valid")
+                expect_valid = test["expected"] == "positive"
+                actual_valid = result["valid"]
+                ok = expect_valid == actual_valid
+
+                if ok:
+                    passed += 1
+                    print(f"  Result: {'valid' if actual_valid else 'invalid'} — PASS")
                 else:
-                    print("  Result: invalid")
+                    failed += 1
+                    print(f"  Result: {'valid' if actual_valid else 'invalid'} — FAIL")
                     for err in result["errors"]:
                         print(f"   - {err}")
 
         except Exception as exc:
+            errors += 1
             print(f"  Error: {exc}")
 
         print()
 
+    total = passed + failed + errors
+    print("=" * 50)
+    print(f"Summary: {passed} passed, {failed} failed, {errors} server errors")
+    print(f"Total checks: {total}")
+    return 1 if failed or errors else 0
+
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

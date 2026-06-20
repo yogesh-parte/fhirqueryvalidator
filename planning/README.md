@@ -8,30 +8,29 @@ End-to-end delivery plan for the FHIR Search Validator — from foundation throu
 | **Target release** | v0.1.0 |
 | **Scope reference** | [PRD](../docs/prd.md) |
 | **Architecture reference** | [ADR 001](../docs/adr/001-fhir-search-validator.md) |
+| **Last updated** | 2026-06-20 |
 
-## Timeline
+## Current status
 
-```mermaid
-gantt
-    title FHIR Search Validator — 3-Week Plan
-    dateFormat YYYY-MM-DD
-    axisFormat %b %d
+| Week | Status | Completion |
+|------|--------|------------|
+| [Week 1 — Foundation](week-1-foundation.md) | Complete | ~95% |
+| [Week 2 — Implementation](week-2-implementation.md) | Mostly complete | ~75% |
+| [Week 3 — Documentation & Release](week-3-documentation-release.md) | In progress | ~85% |
 
-    section Week1_Foundation
-    Package_extraction_and_layering     :done, w1a, 2026-06-16, 3d
-    Config_CLI_and_unit_tests             :done, w1b, 2026-06-18, 2d
-    Week1_carryover_and_CI                :w1c, 2026-06-23, 2d
+### Delivered highlights
 
-    section Week2_Implementation
-    CapabilityStatement_hardening         :w2a, 2026-06-23, 3d
-    Error_handling_and_server_support     :w2b, 2026-06-26, 2d
-    Integration_and_E2E_tests             :w2c, 2026-06-28, 2d
+- Layered package, CLI (`fhir-validate`), 4 public no-auth servers
+- 85 offline tests + 9 integration tests, 98% coverage on core/services
+- Docs: PRD, ADR, configuration, development, API, sample output, e2e checklist
+- CI workflow (`.github/workflows/ci.yml`), LICENSE, CONTRIBUTING, CHANGELOG
 
-    section Week3_Documentation
-    User_and_developer_docs               :w3a, 2026-06-30, 3d
-    Operational_and_release_docs          :w3b, 2026-07-02, 2d
-    Release_readiness_and_signoff         :w3c, 2026-07-04, 2d
-```
+### Remaining before v0.1.0 tag
+
+- [ ] Git tag `v0.1.0` and GitHub release
+- [ ] First CI run on GitHub Actions
+- [ ] Manual notebook E2E sign-off
+- [ ] Week 2 hardening: structured errors, CapabilityStatement error handling (optional for v0.1.0)
 
 ## Weekly goals
 
@@ -41,58 +40,18 @@ gantt
 | [Week 2](week-2-implementation.md) | Implementation | Hardened validator, expanded tests, E2E coverage |
 | [Week 3](week-3-documentation-release.md) | Documentation & release | Complete docs, runbooks, v0.1.0 sign-off |
 
-## Current status (as of 2026-06-20)
-
-Week 1 is **~80% complete**. The following are already delivered:
-
-- Layered package (`config/`, `core/`, `infrastructure/`, `services/`)
-- `FhirValidatorService` + `fhir-validate` CLI
-- `config/.env.example` and gitignored secrets pattern
-- 15 unit tests (offline)
-- README with architecture diagram and Quick Start
-- PRD and updated ADR
-
-Remaining work spans Weeks 1–3 as detailed in the weekly plans below.
-
 ## End-to-end success criteria
 
-By the end of Week 3, the project must satisfy:
-
-| # | Criterion | Verification |
-|---|-----------|--------------|
-| 1 | All P0 PRD requirements (FR-01–FR-12, FR-14) implemented | PRD checklist review |
-| 2 | Unit test coverage ≥ 80% on `core/` and `services/` | `pytest --cov` report |
-| 3 | Integration tests pass against HAPI and Firely | `pytest -m integration` |
-| 4 | CLI and Python API documented with working examples | README Quick Start |
-| 5 | PRD, ADR, configuration guide, and contributor docs complete | Docs review |
-| 6 | No secrets in repository; env template documented | Security checklist |
-| 7 | Demo notebook runs end-to-end on a clean install | Manual E2E walkthrough |
-| 8 | v0.1.0 tagged with changelog | Git tag + release notes |
-
-## Workstreams
-
-```mermaid
-flowchart LR
-    subgraph w1 [Week_1_Foundation]
-        Pkg[Package_and_CLI]
-        Tests1[Unit_tests]
-        Docs1[PRD_ADR_README]
-    end
-
-    subgraph w2 [Week_2_Implementation]
-        Core[Validator_hardening]
-        Tests2[Integration_E2E]
-        Config[Server_and_auth]
-    end
-
-    subgraph w3 [Week_3_Docs_and_Release]
-        Docs2[User_dev_ops_docs]
-        CI[CI_pipeline]
-        Release[v0.1.0_release]
-    end
-
-    w1 --> w2 --> w3
-```
+| # | Criterion | Status |
+|---|-----------|--------|
+| 1 | P0 PRD requirements (FR-01–FR-12, FR-14) | ✅ |
+| 2 | Unit test coverage ≥ 80% on `core/` and `services/` | ✅ 98% |
+| 3 | Integration tests pass (HAPI, Firely, Spark, WildFHIR) | ✅ |
+| 4 | CLI and Python API documented with examples | ✅ |
+| 5 | PRD, ADR, configuration guide, contributor docs | ✅ |
+| 6 | No secrets in repository | ✅ |
+| 7 | Demo notebook E2E on clean install | ⬜ manual |
+| 8 | v0.1.0 tagged with changelog | ⬜ pending tag |
 
 ## Weekly plans
 
@@ -100,14 +59,6 @@ flowchart LR
 - **[Week 2 — Implementation](week-2-implementation.md)**
 - **[Week 3 — Documentation & Release](week-3-documentation-release.md)**
 
-## Out of scope for this 3-week plan
+## Out of scope
 
-Per the [PRD](../docs/prd.md#4-out-of-scope), the following are **not** scheduled:
-
-- HTTP/REST API service
-- Google ADK / GenAI agent integration
-- Live terminology server lookups
-- CapabilityStatement caching layer
-- Chained search, `_include`, pagination validation
-
-These remain future considerations beyond v0.1.0.
+Per the [PRD](../docs/prd.md#4-out-of-scope): HTTP API, Google ADK/GenAI, terminology server lookups, CapabilityStatement caching, chained search / `_include` validation.

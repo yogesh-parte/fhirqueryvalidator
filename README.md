@@ -358,10 +358,18 @@ python scripts/run_all_tests.py
 
 ## Documentation
 
-- [Product Requirements Document (PRD)](docs/prd.md) — problem statement, approach, scope
-- [ADR 001: Architecture](docs/adr/001-fhir-search-validator.md) — design decisions and trade-offs
-- [Public Test Servers](docs/public-test-servers.md) — default no-auth FHIR sandboxes for testing
-- [Sample Output](docs/sample-output.md) — captured CLI, API, test, and multi-server results
+| Doc | Description |
+|-----|-------------|
+| [PRD](docs/prd.md) | Problem statement, approach, in/out of scope |
+| [ADR 001](docs/adr/001-fhir-search-validator.md) | Architecture and design decisions |
+| [Configuration](docs/configuration.md) | Environment variables and troubleshooting |
+| [Development](docs/development.md) | Local setup, project layout, adding tests |
+| [API Reference](docs/api.md) | `FhirValidatorService`, CLI, registry |
+| [Public Test Servers](docs/public-test-servers.md) | No-auth FHIR sandboxes for testing |
+| [Sample Output](docs/sample-output.md) | Captured CLI, API, and test results |
+| [E2E Checklist](docs/e2e-checklist.md) | Release sign-off checklist |
+| [CONTRIBUTING](CONTRIBUTING.md) | How to contribute |
+| [CHANGELOG](CHANGELOG.md) | Release history |
 
 ## Roadmap
 
