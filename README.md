@@ -373,10 +373,10 @@ python scripts/run_all_tests.py
 
 ## Roadmap
 
-See the [3-Week Implementation Plan](planning/README.md) for the full delivery schedule:
+See the [3-Week Implementation Plan](planning/README.md) for the full delivery schedule (**delivery date: May 15, 2026**):
 
-| Week | Focus | Plan |
-|------|-------|------|
-| Week 1 | Foundation — package, CLI, unit tests, PRD/ADR | [week-1-foundation.md](planning/week-1-foundation.md) |
-| Week 2 | Implementation — hardening, integration, E2E tests | [week-2-implementation.md](planning/week-2-implementation.md) |
-| Week 3 | Documentation & release — guides, CI, v0.1.0 | [week-3-documentation-release.md](planning/week-3-documentation-release.md) |
+| Week | Dates | Focus | Plan |
+|------|-------|-------|------|
+| Week 1 | Apr 24 – Apr 30 | Foundation — package, CLI, unit tests, PRD/ADR | [week-1-foundation.md](planning/week-1-foundation.md) |
+| Week 2 | May 1 – May 7 | Implementation — hardening, integration, E2E tests | [week-2-implementation.md](planning/week-2-implementation.md) |
+| Week 3 | May 8 – May 15 | Documentation & release — guides, CI, v0.1.0 | [week-3-documentation-release.md](planning/week-3-documentation-release.md) |

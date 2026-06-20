@@ -2,7 +2,8 @@
 
 **Theme:** Harden the CapabilityStatement-driven validator, expand test coverage, and prove end-to-end behavior across real FHIR servers.
 
-**Dates:** Week of 2026-06-23  
+**Dates:** May 1 – May 7, 2026  
+**Delivery milestone:** May 15, 2026  
 **Status:** Mostly complete (~75%)
 
 ## Deliverables

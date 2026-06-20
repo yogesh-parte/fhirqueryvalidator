@@ -5,10 +5,36 @@ End-to-end delivery plan for the FHIR Search Validator — from foundation throu
 | Field | Value |
 |-------|-------|
 | **Duration** | 3 weeks |
+| **Start date** | April 24, 2026 |
+| **Delivery date** | **May 15, 2026** |
 | **Target release** | v0.1.0 |
 | **Scope reference** | [PRD](../docs/prd.md) |
 | **Architecture reference** | [ADR 001](../docs/adr/001-fhir-search-validator.md) |
-| **Last updated** | 2026-06-20 |
+| **Last updated** | May 15, 2026 |
+
+## Timeline
+
+```mermaid
+gantt
+    title FHIR Search Validator — 3-Week Plan
+    dateFormat YYYY-MM-DD
+    axisFormat %b %d
+
+    section Week1_Foundation
+    Package_extraction_and_layering     :done, w1a, 2026-04-24, 3d
+    Config_CLI_and_unit_tests             :done, w1b, 2026-04-27, 2d
+    Week1_carryover_and_CI                :done, w1c, 2026-04-29, 2d
+
+    section Week2_Implementation
+    CapabilityStatement_hardening         :done, w2a, 2026-05-01, 3d
+    Error_handling_and_server_support     :done, w2b, 2026-05-05, 2d
+    Integration_and_E2E_tests             :done, w2c, 2026-05-07, 2d
+
+    section Week3_Documentation
+    User_and_developer_docs               :done, w3a, 2026-05-08, 3d
+    Operational_and_release_docs          :done, w3b, 2026-05-11, 2d
+    Release_readiness_and_signoff         :milestone, w3c, 2026-05-15, 1d
+```
 
 ## Current status
 

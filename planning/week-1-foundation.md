@@ -2,7 +2,8 @@
 
 **Theme:** Extract, structure, and make the validator reusable as a standard Python backend package.
 
-**Dates:** Week of 2026-06-16  
+**Dates:** April 24 – April 30, 2026  
+**Delivery milestone:** May 15, 2026  
 **Status:** Complete (~95%)
 
 ## Deliverables

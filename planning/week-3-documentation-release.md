@@ -2,7 +2,8 @@
 
 **Theme:** Complete all user, developer, and operational documentation; finalize CI; ship v0.1.0.
 
-**Dates:** Week of 2026-05-15  
+**Dates:** May 8 – May 15, 2026  
+**Delivery date:** **May 15, 2026**
 **Status:** In progress (~85%)
 
 ## Deliverables
