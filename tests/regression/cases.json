@@ -1,0 +1,107 @@
+[
+  {
+    "id": "patient_gender_male_valid",
+    "description": "Valid Patient gender search",
+    "query": "https://hapi.fhir.org/baseR4/Patient?gender=male",
+    "expected_valid": true,
+    "expected_errors": []
+  },
+  {
+    "id": "patient_gender_female_valid",
+    "description": "Valid Patient gender female",
+    "query": "https://hapi.fhir.org/baseR4/Patient?gender=female",
+    "expected_valid": true,
+    "expected_errors": []
+  },
+  {
+    "id": "patient_gender_invalid_value",
+    "description": "Invalid gender coded value",
+    "query": "https://hapi.fhir.org/baseR4/Patient?gender=fe",
+    "expected_valid": false,
+    "expected_error_substrings": ["Patient.gender", "fe"]
+  },
+  {
+    "id": "patient_unknown_param",
+    "description": "Unsupported search parameter",
+    "query": "https://hapi.fhir.org/baseR4/Patient?unknown_param=value",
+    "expected_valid": false,
+    "expected_error_substrings": ["unknown_param", "not allowed"]
+  },
+  {
+    "id": "patient_gender_exact_modifier_valid",
+    "description": "Allowed :exact modifier on gender",
+    "query": "https://hapi.fhir.org/baseR4/Patient?gender:exact=male",
+    "expected_valid": true,
+    "expected_errors": []
+  },
+  {
+    "id": "patient_gender_missing_modifier_invalid",
+    "description": "Disallowed :missing modifier on gender",
+    "query": "https://hapi.fhir.org/baseR4/Patient?gender:missing=true",
+    "expected_valid": false,
+    "expected_error_substrings": ["missing", "gender"]
+  },
+  {
+    "id": "patient_birthdate_gt_comparator_valid",
+    "description": "Allowed :gt comparator on birthdate",
+    "query": "https://hapi.fhir.org/baseR4/Patient?birthdate:gt=2000-01-01",
+    "expected_valid": true,
+    "expected_errors": []
+  },
+  {
+    "id": "patient_identifier_valid",
+    "description": "Valid numeric patient identifier",
+    "query": "https://hapi.fhir.org/baseR4/Patient?identifier=12345678",
+    "expected_valid": true,
+    "expected_errors": []
+  },
+  {
+    "id": "patient_identifier_all_identical_digits",
+    "description": "Patient identifier with all identical digits",
+    "query": "https://hapi.fhir.org/baseR4/Patient?identifier=11111111",
+    "expected_valid": false,
+    "expected_error_substrings": ["Patient.identifier", "identical"]
+  },
+  {
+    "id": "patient_identifier_too_short",
+    "description": "Patient identifier shorter than 8 digits",
+    "query": "https://hapi.fhir.org/baseR4/Patient?identifier=1234567",
+    "expected_valid": false,
+    "expected_error_substrings": ["Patient.identifier", "8 and 10"]
+  },
+  {
+    "id": "unsupported_resource_type",
+    "description": "Resource type not in CapabilityStatement",
+    "query": "https://hapi.fhir.org/baseR4/UnknownResource?foo=bar",
+    "expected_valid": false,
+    "expected_error_substrings": ["UnknownResource", "not supported"]
+  },
+  {
+    "id": "allergy_clinical_status_active_valid",
+    "description": "Valid AllergyIntolerance clinical-status",
+    "query": "https://hapi.fhir.org/baseR4/AllergyIntolerance?clinical-status=active",
+    "expected_valid": true,
+    "expected_errors": []
+  },
+  {
+    "id": "allergy_clinical_status_invalid",
+    "description": "Invalid AllergyIntolerance clinical-status value",
+    "query": "https://hapi.fhir.org/baseR4/AllergyIntolerance?clinical-status=deleted",
+    "expected_valid": false,
+    "expected_error_substrings": ["AllergyIntolerance.clinical-status", "deleted"]
+  },
+  {
+    "id": "relative_url_patient_gender",
+    "description": "Relative URL path parsing",
+    "query": "/Patient?gender=other",
+    "expected_valid": true,
+    "expected_errors": []
+  },
+  {
+    "id": "multiple_params_one_invalid",
+    "description": "Multiple params where one has invalid value",
+    "query": "https://hapi.fhir.org/baseR4/Patient?gender=invalid&identifier=12345678",
+    "expected_valid": false,
+    "expected_error_substrings": ["Patient.gender", "invalid"]
+  }
+]
