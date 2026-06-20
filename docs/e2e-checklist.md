@@ -16,7 +16,7 @@ Release readiness checklist for v0.1.0. Last verified: **2026-06-20**.
 | Docs links in README | All documentation links resolve | ✅ |
 | No secrets in repo | `.env.local` gitignored | ✅ |
 | CI workflow | `.github/workflows/ci.yml` passes on push | ⬜ pending first CI run |
-| Git tag | `v0.1.0` created | ⬜ pending |
+| Git tag | `v0.1.0` created | ✅ |
 
 ## Reproduce
 

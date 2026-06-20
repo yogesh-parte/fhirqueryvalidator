@@ -19,7 +19,7 @@
 | LICENSE (MIT) | All | ✅ Done | `LICENSE` |
 | CHANGELOG | All | ✅ Done | `CHANGELOG.md` |
 | CI workflow | Engineering | ✅ Done | `.github/workflows/ci.yml` |
-| Release notes / git tag | All | ⬜ Pending | `v0.1.0` tag |
+| Release notes / git tag | All | ✅ Tag pushed | `v0.1.0` on GitHub |
 
 ## Task breakdown
 
@@ -48,8 +48,8 @@
 - [x] Offline and integration tests verified (see `docs/sample-output.md`)
 - [ ] Run E2E checklist notebook step on clean machine
 - [ ] First CI run passes on GitHub
-- [ ] Create git tag `v0.1.0`
-- [ ] Publish GitHub release with CHANGELOG summary
+- [x] Create git tag `v0.1.0` and push to GitHub
+- [ ] Publish GitHub release with CHANGELOG summary (via GitHub UI: Releases → Draft new release)
 - [x] Close Week 1–3 planning items (this update)
 
 ## Documentation index (current)
@@ -78,5 +78,5 @@ README.md
 - [x] CONTRIBUTING.md and LICENSE published
 - [x] CI workflow committed
 - [x] E2E checklist completed (except notebook + CI first run)
-- [ ] v0.1.0 tagged with CHANGELOG entry
+- [x] v0.1.0 tagged with CHANGELOG entry
 - [x] README Documentation section links to full doc set

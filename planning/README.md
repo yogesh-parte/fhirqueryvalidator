@@ -27,7 +27,8 @@ End-to-end delivery plan for the FHIR Search Validator — from foundation throu
 
 ### Remaining before v0.1.0 tag
 
-- [ ] Git tag `v0.1.0` and GitHub release
+- [x] Git tag `v0.1.0` pushed
+- [ ] GitHub release published (create from tag on GitHub)
 - [ ] First CI run on GitHub Actions
 - [ ] Manual notebook E2E sign-off
 - [ ] Week 2 hardening: structured errors, CapabilityStatement error handling (optional for v0.1.0)
@@ -51,7 +52,7 @@ End-to-end delivery plan for the FHIR Search Validator — from foundation throu
 | 5 | PRD, ADR, configuration guide, contributor docs | ✅ |
 | 6 | No secrets in repository | ✅ |
 | 7 | Demo notebook E2E on clean install | ⬜ manual |
-| 8 | v0.1.0 tagged with changelog | ⬜ pending tag |
+| 8 | v0.1.0 tagged with changelog | ✅ tag pushed |
 
 ## Weekly plans
 
