@@ -370,6 +370,7 @@ python scripts/run_all_tests.py
 | [E2E Checklist](docs/e2e-checklist.md) | Release sign-off checklist |
 | [CONTRIBUTING](CONTRIBUTING.md) | How to contribute |
 | [CHANGELOG](CHANGELOG.md) | Release history |
+| [Utility Guide (Word)](docs/Utility-FHIR%20Query%20Validator.docx) | Introduction, scope, tests, configuration appendix |
 
 ## Roadmap
 
