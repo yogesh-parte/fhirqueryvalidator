@@ -6,6 +6,9 @@
 | **Version** | 0.1.0 |
 | **Status** | Active |
 | **Last updated** | 2026-06-20 |
+| **Implementation spec** | [docs/Spec/spec.md](Spec/spec.md) |
+
+> **Note:** This PRD defines product intent. For implementation truth (validation rules, API contracts, test traceability), see the [Specification](Spec/README.md) folder.
 
 ## 1. Problem Statement
 

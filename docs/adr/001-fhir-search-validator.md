@@ -4,7 +4,7 @@
 |-------|-------|
 | **Status** | Accepted |
 | **Date** | 2026-06-20 |
-| **Related** | [PRD: FHIR Search Validator](../prd.md) |
+| **Related** | [PRD](../prd.md), [Specification](../Spec/spec.md) |
 
 ## Context
 

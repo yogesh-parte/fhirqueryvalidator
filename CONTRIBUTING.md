@@ -6,9 +6,10 @@ Thank you for contributing to the FHIR Search Validator.
 
 1. Fork the repository
 2. Clone your fork and create a branch
-3. Install dev dependencies: `make install-dev`
-4. Make changes and add tests
-5. Run `make test-cov` before opening a PR
+3. Read the [Specification](docs/Spec/README.md) — especially [agent-workflow.md](docs/Spec/agent-workflow.md) — before changing validation logic or public APIs
+4. Install dev dependencies: `make install-dev`
+5. Make changes and add tests
+6. Run `make test-cov` before opening a PR
 
 ## Branch naming
 

@@ -48,7 +48,7 @@ gantt
 
 - Layered package, CLI (`fhir-validate`), 4 public no-auth servers
 - 85 offline tests + 9 integration tests, 98% coverage on core/services
-- Docs: PRD, ADR, configuration, development, API, sample output, e2e checklist
+- Docs: PRD, ADR, **Spec (SDD)**, configuration, development, API, sample output, e2e checklist
 - CI workflow (`.github/workflows/ci.yml`), LICENSE, CONTRIBUTING, CHANGELOG
 
 ### Remaining before v0.1.0 tag
@@ -75,7 +75,7 @@ gantt
 | 2 | Unit test coverage ≥ 80% on `core/` and `services/` | ✅ 98% |
 | 3 | Integration tests pass (HAPI, Firely, Spark, WildFHIR) | ✅ |
 | 4 | CLI and Python API documented with examples | ✅ |
-| 5 | PRD, ADR, configuration guide, contributor docs | ✅ |
+| 5 | PRD, ADR, Spec (SDD), configuration guide, contributor docs | ✅ |
 | 6 | No secrets in repository | ✅ |
 | 7 | Demo notebook E2E on clean install | ⬜ manual |
 | 8 | v0.1.0 tagged with changelog | ✅ tag pushed |

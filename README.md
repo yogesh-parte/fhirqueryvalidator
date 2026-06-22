@@ -360,6 +360,7 @@ python scripts/run_all_tests.py
 
 | Doc | Description |
 |-----|-------------|
+| [Specification (SDD)](docs/Spec/README.md) | Authoritative implementation spec for agents and developers |
 | [PRD](docs/prd.md) | Problem statement, approach, in/out of scope |
 | [ADR 001](docs/adr/001-fhir-search-validator.md) | Architecture and design decisions |
 | [Configuration](docs/configuration.md) | Environment variables and troubleshooting |
