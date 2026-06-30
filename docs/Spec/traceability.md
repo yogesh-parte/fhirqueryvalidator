@@ -20,7 +20,7 @@ Requirement → implementation → test mapping. Update this file when adding re
 | FR-12 | `cli.py`, `services/validator_service.py` | `test_cli.py` (3), `test_service.py` | AC-12–AC-14 |
 | FR-13 | `examples/notebooks/FHIR_search_validator_demo.ipynb` | — | Manual E2E checklist |
 | FR-14 | `tests/conftest.py` (fixture) | All `tests/unit/` (74 tests) | `test_regression.py` (30 runs: 15 cases × 2 paths) |
-| FR-15 | `infrastructure/capability_cache.py`, `config/settings.py` | `test_capability_cache.py` (9), `test_settings_cache.py` (5), `test_capability_index.py`, `test_service.py` | — |
+| FR-15 | `infrastructure/capability_cache.py`, `config/settings.py` | `test_capability_cache.py` (9), `test_settings_cache.py` (5), `test_capability_index.py`, `test_service.py` | — ([ADR 002](../adr/002-capability-statement-cache.md)) |
 
 ## Non-functional requirements
 

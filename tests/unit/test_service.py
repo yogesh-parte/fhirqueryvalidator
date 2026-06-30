@@ -100,7 +100,7 @@ def test_refresh_capability_invalidates_cache_and_reloads(
 
 
 @patch("fhir_validator_agent.services.validator_service.get_auth_headers")
-@patch("fhir_validator_agent.infrastructure.capability_index.requests.get")
+@patch("fhir_validator_agent.infrastructure.capability_index.outbound_get")
 def test_service_instances_share_capability_cache(
     mock_get,
     mock_auth,
@@ -109,6 +109,7 @@ def test_service_instances_share_capability_cache(
     reset_capability_cache()
     mock_auth.return_value = {}
     mock_response = MagicMock()
+    mock_response.content = b'{"resourceType": "CapabilityStatement"}'
     mock_response.json.return_value = sample_capability_statement
     mock_get.return_value = mock_response
 

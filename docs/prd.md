@@ -204,4 +204,4 @@ See the [3-Week Implementation Plan](../planning/README.md) for the delivery sch
 - [FHIR R4 — CapabilityStatement](https://hl7.org/fhir/R4/capabilitystatement.html)
 - [FHIR R4 — Search](https://hl7.org/fhir/R4/search.html)
 - [README](../README.md)
-- [ADR 001: FHIR Search Validator Architecture](adr/001-fhir-search-validator.md)
+- [ADRs](adr/README.md) — [001: Architecture](adr/001-fhir-search-validator.md), [002: CapabilityStatement cache](adr/002-capability-statement-cache.md)

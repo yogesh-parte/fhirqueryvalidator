@@ -151,5 +151,6 @@ For invalid cases, use `expected_error_substrings` instead of exact error lists.
 
 - [API reference](api.md)
 - [Configuration guide](configuration.md)
-- [ADR 001](adr/001-fhir-search-validator.md)
+- [ADRs](adr/README.md) — architecture decisions
+- [Code reviews](reviews/README.md) — review records
 - [PRD](prd.md)

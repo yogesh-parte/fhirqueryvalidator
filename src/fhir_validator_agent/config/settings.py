@@ -62,3 +62,38 @@ def get_capability_cache_ttl_seconds() -> int:
 
 def get_capability_cache_enabled() -> bool:
     return os.getenv("FHIR_CAPABILITY_CACHE_ENABLED", "true").lower() in {"1", "true", "yes"}
+
+
+def get_max_metadata_response_bytes() -> int:
+    raw_value = os.getenv("FHIR_MAX_METADATA_RESPONSE_BYTES", str(10 * 1024 * 1024))
+    try:
+        max_bytes = int(raw_value)
+    except ValueError as exc:
+        raise ValueError(
+            f"FHIR_MAX_METADATA_RESPONSE_BYTES must be an integer number of bytes, got {raw_value!r}"
+        ) from exc
+    if max_bytes <= 0:
+        raise ValueError("FHIR_MAX_METADATA_RESPONSE_BYTES must be positive")
+    return max_bytes
+
+
+def get_outbound_rate_limit_config() -> tuple[int, float]:
+    raw_max = os.getenv("FHIR_OUTBOUND_RATE_LIMIT_PER_HOST", "30")
+    raw_window = os.getenv("FHIR_OUTBOUND_RATE_LIMIT_WINDOW_SECONDS", "60")
+    try:
+        max_requests = int(raw_max)
+    except ValueError as exc:
+        raise ValueError(
+            f"FHIR_OUTBOUND_RATE_LIMIT_PER_HOST must be an integer, got {raw_max!r}"
+        ) from exc
+    try:
+        window_seconds = float(raw_window)
+    except ValueError as exc:
+        raise ValueError(
+            f"FHIR_OUTBOUND_RATE_LIMIT_WINDOW_SECONDS must be a number, got {raw_window!r}"
+        ) from exc
+    if max_requests <= 0:
+        raise ValueError("FHIR_OUTBOUND_RATE_LIMIT_PER_HOST must be positive")
+    if window_seconds <= 0:
+        raise ValueError("FHIR_OUTBOUND_RATE_LIMIT_WINDOW_SECONDS must be positive")
+    return max_requests, window_seconds

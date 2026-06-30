@@ -1,7 +1,10 @@
-import requests
 from typing import Any
 
+from ..config.settings import get_max_metadata_response_bytes
 from .capability_cache import CapabilityStatementCache, get_capability_cache
+from .http_limits import read_json_response
+from .outbound_http import outbound_get, outbound_post
+from .url_validation import validate_outbound_url
 
 
 def get_auth_headers(use_auth: bool, token_url: str, client_id: str, client_secret: str) -> dict[str, str]:
@@ -11,14 +14,17 @@ def get_auth_headers(use_auth: bool, token_url: str, client_id: str, client_secr
     if not all([token_url, client_id, client_secret]):
         raise RuntimeError("Missing OAuth configuration: TOKEN_URL, CLIENT_ID, CLIENT_SECRET")
 
-    response = requests.post(
+    validate_outbound_url(token_url)
+    response = outbound_post(
         token_url,
         data={"grant_type": "client_credentials"},
         auth=(client_id, client_secret),
         timeout=20,
+        request_kind="oauth_token",
     )
     response.raise_for_status()
-    token = response.json().get("access_token")
+    token_payload = read_json_response(response, max_bytes=get_max_metadata_response_bytes())
+    token = token_payload.get("access_token")
     if not token:
         raise RuntimeError("OAuth token response did not contain access_token")
     return {"Authorization": f"Bearer {token}"}
@@ -35,6 +41,8 @@ def load_capability_statement(
     use_cache: bool | None = None,
     cache: CapabilityStatementCache | None = None,
 ) -> dict[str, Any]:
+    validate_outbound_url(url)
+
     cache_instance = cache or get_capability_cache()
     should_use_cache = cache_instance.enabled if use_cache is None else use_cache
 
@@ -44,9 +52,14 @@ def load_capability_statement(
             return cached
 
     request_headers = {**FHIR_JSON_HEADERS, **(headers or {})}
-    response = requests.get(url, headers=request_headers, timeout=timeout)
+    response = outbound_get(
+        url,
+        headers=request_headers,
+        timeout=timeout,
+        request_kind="metadata",
+    )
     response.raise_for_status()
-    capability_statement = response.json()
+    capability_statement = read_json_response(response, max_bytes=get_max_metadata_response_bytes())
 
     if should_use_cache:
         cache_instance.set(url, capability_statement, headers)

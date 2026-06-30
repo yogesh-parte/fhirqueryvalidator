@@ -21,7 +21,7 @@ Thank you for contributing to the FHIR Search Validator.
 
 1. Update or add tests for behavior changes
 2. Add regression cases to `tests/regression/cases.json` for validation rule changes
-3. Update relevant docs (`docs/`, `README.md`)
+3. Update relevant docs (`docs/`, `README.md`); add an [ADR](docs/adr/README.md) for significant architectural decisions
 4. Ensure `pytest -m "not integration"` passes
 5. Open a PR against `main` with a clear description
 

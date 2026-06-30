@@ -29,3 +29,9 @@ jobs:
 
       - name: Run offline tests with coverage
         run: make test-cov
+
+      - name: Security scan (Bandit)
+        run: bandit -r src/ -ll -q
+
+      - name: Dependency audit
+        run: pip-audit

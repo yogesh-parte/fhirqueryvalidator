@@ -55,6 +55,7 @@ Do **not** implement these without updating the Spec first:
 | API contract change (return shape, method signature) | `interfaces.md`, `requirements.md`, `acceptance-criteria.md` |
 | New error message format | `behavior.md` error catalog |
 | New environment variable | `interfaces.md` |
+| Significant architectural decision | New ADR in `docs/adr/`, update `docs/adr/README.md` index |
 
 ## 5. Verification commands
 
@@ -105,7 +106,8 @@ feat: add Observation.status value set (FR-06)
 | Document | Use when |
 |----------|----------|
 | [PRD](../prd.md) | Understanding product scope and personas |
-| [ADR 001](../adr/001-fhir-search-validator.md) | Architecture decisions and trade-offs |
+| [ADRs](../adr/README.md) | Architecture decisions and trade-offs |
+| [Code reviews](../reviews/README.md) | Past review findings and verdicts |
 | [configuration.md](../configuration.md) | Operator setup and troubleshooting |
 | [development.md](../development.md) | Local dev environment |
 | [api.md](../api.md) | Quick API lookup (Spec is authoritative) |

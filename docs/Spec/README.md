@@ -13,10 +13,11 @@ This repository demonstrates that specifications can also be **extracted retroac
 | Layer | Location | Audience | Purpose |
 |-------|----------|----------|---------|
 | Product | [../prd.md](../prd.md) | Stakeholders | Why we built it; business scope |
-| Architecture | [../adr/](../adr/) | Engineers | Design decisions and trade-offs |
+| Architecture | [../adr/README.md](../adr/README.md) | Engineers | Design decisions and trade-offs (ADRs) |
 | **Specification** | **this folder** | **Agents + implementers** | **What the system must do** |
 | Operations | [../configuration.md](../configuration.md) | Operators | How to configure and run |
 | API reference | [../api.md](../api.md) | Developers | Quick API lookup |
+| Code reviews | [../reviews/README.md](../reviews/README.md) | Engineers | Timestamped review records |
 
 **Rule:** For implementation truth, Spec overrides PRD. PRD provides product context only.
 

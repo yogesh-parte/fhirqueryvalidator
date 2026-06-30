@@ -137,7 +137,7 @@ cap = load_capability_statement("https://hapi.fhir.org/baseR4/metadata", use_cac
 
 ### `invalidate_capability_cache(url=None) -> int`
 
-Trigger-based cache invalidation. Returns the number of entries removed.
+Trigger-based cache invalidation. Returns the number of entries removed. See [ADR 002](adr/002-capability-statement-cache.md) for design rationale.
 
 ```python
 from fhir_validator_agent import invalidate_capability_cache

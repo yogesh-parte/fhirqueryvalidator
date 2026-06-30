@@ -61,6 +61,19 @@ def test_cache_disabled_skips_storage_and_lookup():
     assert cache.get("https://example.com/metadata") is None
 
 
+def test_cache_key_does_not_store_raw_bearer_token():
+    cache = CapabilityStatementCache()
+    cache.set(
+        "https://example.com/metadata",
+        {"id": "cached"},
+        headers={"Authorization": "Bearer super-secret-token"},
+    )
+
+    stored_keys = list(cache._entries.keys())
+    assert len(stored_keys) == 1
+    assert "super-secret-token" not in stored_keys[0]
+
+
 def test_cache_key_includes_auth_headers():
     cache = CapabilityStatementCache()
     cap_a = {"resourceType": "CapabilityStatement", "auth": "a"}

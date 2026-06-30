@@ -6,6 +6,8 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- [ADR 002](docs/adr/002-capability-statement-cache.md): In-Memory CapabilityStatement Cache
+- `docs/adr/README.md` and `docs/reviews/` documentation indexes
 - In-memory CapabilityStatement cache with configurable TTL (default 24 hours)
 - `invalidate_capability_cache()` for trigger-based cache invalidation (per URL or global)
 - `FhirValidatorService.refresh_capability()` to invalidate and reload metadata for the current server

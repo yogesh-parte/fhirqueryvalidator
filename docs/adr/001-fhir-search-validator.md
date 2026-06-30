@@ -4,7 +4,7 @@
 |-------|-------|
 | **Status** | Accepted |
 | **Date** | 2026-06-20 |
-| **Related** | [PRD](../prd.md), [Specification](../Spec/spec.md) |
+| **Related** | [PRD](../prd.md), [Specification](../Spec/spec.md), [ADR 002](002-capability-statement-cache.md) |
 
 ## Context
 
@@ -28,7 +28,7 @@ Create a reusable library under `src/fhir_validator_agent/` with clear separatio
 |-------|----------------|
 | `config/` | Environment loading, server presets, OAuth settings |
 | `core/` | Query parsing, CapabilityStatement-driven validation, static value sets |
-| `infrastructure/` | HTTP calls to fetch CapabilityStatement, in-memory metadata cache, OAuth tokens |
+| `infrastructure/` | HTTP calls to fetch CapabilityStatement, OAuth tokens (see [ADR 002](002-capability-statement-cache.md) for metadata cache) |
 | `services/` | `FhirValidatorService` orchestration |
 | `cli.py` | Console entry point (`fhir-validate`) |
 
@@ -111,14 +111,14 @@ Retain `FhirValidatorAgent` as an alias for `FhirValidatorService` in the public
 
 ### Negative / trade-offs
 
-- CapabilityStatement is cached in-memory per process (24-hour default TTL); not shared across processes or hosts
+- CapabilityStatement caching adds staleness risk until TTL or invalidation (see [ADR 002](002-capability-statement-cache.md))
 - Static value sets must be maintained manually for semantic checks
 - Does not validate advanced search features (`_include`, chained searches, etc.)
 - CapabilityStatement may not always reflect true server behavior (trust-but-verify)
 
 ### Follow-up work
 
-- Persistent or distributed CapabilityStatement cache (Redis, shared disk)
+- See [ADR 002](002-capability-statement-cache.md) follow-up for persistent/distributed cache
 - Expanded value-set validation
 - Improved error messages with remediation hints
 - See [3-Week Implementation Plan](../../planning/README.md)

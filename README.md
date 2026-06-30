@@ -31,7 +31,6 @@ flowchart TB
     end
 
     subgraph infra [infrastructure]
-        CapCache[capability_cache]
         CapIndex[capability_index]
     end
 
@@ -47,38 +46,13 @@ flowchart TB
     ValidatorService --> Validator
     Validator --> Parser
     Validator --> Codesets
-    CapIndex --> CapCache
     CapIndex --> FHIRServer
 ```
 
 1. **Parse** the query URL into resource type and query parameters
-2. **Load** the server's CapabilityStatement from `/metadata` (cached in-memory with a 24-hour default TTL)
+2. **Load** the server's CapabilityStatement from `/metadata`
 3. **Validate** against allowed resource types, search params, modifiers, and comparators
 4. **Apply extra rules** for known value sets and Patient identifiers
-
-### CapabilityStatement caching
-
-Metadata responses are cached **in-memory per process** to avoid repeated `/metadata` calls when validating many queries against the same server. Cache entries expire automatically after the configured TTL (default **24 hours**) or can be invalidated on demand.
-
-```python
-from fhir_validator_agent import FhirValidatorService, invalidate_capability_cache
-
-service = FhirValidatorService.from_env()
-service.validate_query("https://hapi.fhir.org/baseR4/Patient?gender=male")
-
-# Invalidate one server (all auth variants for that metadata URL)
-invalidate_capability_cache("https://hapi.fhir.org/baseR4/metadata")
-
-# Or refresh the current service instance
-service.refresh_capability()
-```
-
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `FHIR_CAPABILITY_CACHE_ENABLED` | `true` | Enable or disable metadata caching |
-| `FHIR_CAPABILITY_CACHE_TTL_SECONDS` | `86400` | Cache TTL in seconds (24 hours) |
-
-Set `FHIR_CAPABILITY_CACHE_TTL_SECONDS=0` to expire entries on the next read. Set `FHIR_CAPABILITY_CACHE_ENABLED=false` to always fetch fresh metadata.
 
 ## What it validates
 
@@ -140,7 +114,7 @@ fhir_query_validator-DS-fhir/
 │   └── fhir_validator_agent/
 │       ├── config/           # Environment and server settings
 │       ├── core/             # Parsing and validation rules
-│       ├── infrastructure/   # HTTP calls, CapabilityStatement cache, OAuth
+│       ├── infrastructure/   # HTTP calls (CapabilityStatement, OAuth)
 │       └── services/         # Application orchestration
 └── tests/
     ├── unit/                 # Fast, offline unit tests
@@ -161,7 +135,7 @@ Get validating in under two minutes. No configuration required — defaults targ
 
 ```bash
 git clone <repo-url>
-cd fhir_query_validator-DS-fhir
+cd fhir_query_validator
 
 python3 -m venv .venv
 source .venv/bin/activate        # Windows: .venv\Scripts\activate
@@ -360,8 +334,6 @@ Run only regression: `pytest -m regression`
 | `TOKEN_URL` | — | OAuth token endpoint |
 | `CLIENT_ID` | — | OAuth client ID |
 | `CLIENT_SECRET` | — | OAuth client secret |
-| `FHIR_CAPABILITY_CACHE_ENABLED` | `true` | Enable in-memory CapabilityStatement cache |
-| `FHIR_CAPABILITY_CACHE_TTL_SECONDS` | `86400` | Cache TTL in seconds (24 hours) |
 
 Copy `config/.env.example` to `config/.env.local` and edit. Never commit `.env.local` — it is gitignored.
 

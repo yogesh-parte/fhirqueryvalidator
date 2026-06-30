@@ -23,3 +23,7 @@ test-cov:
 
 lint:
 	python -m compileall src tests
+
+security:
+	bandit -r src/ -ll -q
+	pip-audit

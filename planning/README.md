@@ -9,7 +9,7 @@ End-to-end delivery plan for the FHIR Search Validator — from foundation throu
 | **Delivery date** | **May 15, 2026** |
 | **Target release** | v0.1.0 |
 | **Scope reference** | [PRD](../docs/prd.md) |
-| **Architecture reference** | [ADR 001](../docs/adr/001-fhir-search-validator.md) |
+| **Architecture reference** | [ADRs](../docs/adr/README.md) (001, 002) |
 | **Last updated** | May 15, 2026 |
 
 ## Timeline

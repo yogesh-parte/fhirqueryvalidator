@@ -56,6 +56,8 @@ service.refresh_capability()
 
 Cache is **per-process**. Restarting Python clears all entries. Entries with different `Authorization` headers are cached separately.
 
+Design rationale and trade-offs: [ADR 002 — In-Memory CapabilityStatement Cache](adr/002-capability-statement-cache.md).
+
 ## Public test servers (no authentication)
 
 Built-in presets require **no credentials**. See [public-test-servers.md](public-test-servers.md).
@@ -158,6 +160,7 @@ print(resolve_fhir_urls())
 
 ## Security practices
 
+- Do not run with caching enabled in untrusted multi-tenant processes (bearer tokens are part of in-memory cache keys; see [ADR 002](adr/002-capability-statement-cache.md))
 - Never commit `config/.env.local` or files containing secrets
 - Use `config/.env.example` as the documented template only
 - Do not send PHI to public test sandboxes

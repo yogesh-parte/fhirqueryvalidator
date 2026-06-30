@@ -140,4 +140,5 @@ flowchart LR
 ### Product and architecture
 
 - [PRD](../prd.md) — product requirements
-- [ADR 001](../adr/001-fhir-search-validator.md) — architecture decisions
+- [ADRs](../adr/README.md) — architecture decisions ([001](../adr/001-fhir-search-validator.md), [002](../adr/002-capability-statement-cache.md))
+- [Code reviews](../reviews/README.md) — timestamped review records

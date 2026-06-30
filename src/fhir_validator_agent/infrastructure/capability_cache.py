@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import threading
 import time
 from typing import Any
@@ -9,10 +10,18 @@ from ..config.settings import get_capability_cache_enabled, get_capability_cache
 DEFAULT_CACHE_TTL_SECONDS = 86_400
 
 
+def _header_fingerprint(header_name: str, header_value: str) -> str:
+    if header_name.lower() == "authorization" and header_value:
+        return hashlib.sha256(header_value.encode()).hexdigest()[:16]
+    return header_value
+
+
 def _cache_key(url: str, headers: dict[str, str] | None) -> str:
     if not headers:
         return url
-    header_parts = [f"{key}={value}" for key, value in sorted(headers.items())]
+    header_parts = [
+        f"{key}={_header_fingerprint(key, value)}" for key, value in sorted(headers.items())
+    ]
     return f"{url}|{'|'.join(header_parts)}"
 
 
