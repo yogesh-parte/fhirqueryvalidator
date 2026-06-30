@@ -28,7 +28,7 @@ Create a reusable library under `src/fhir_validator_agent/` with clear separatio
 |-------|----------------|
 | `config/` | Environment loading, server presets, OAuth settings |
 | `core/` | Query parsing, CapabilityStatement-driven validation, static value sets |
-| `infrastructure/` | HTTP calls to fetch CapabilityStatement and OAuth tokens |
+| `infrastructure/` | HTTP calls to fetch CapabilityStatement, in-memory metadata cache, OAuth tokens |
 | `services/` | `FhirValidatorService` orchestration |
 | `cli.py` | Console entry point (`fhir-validate`) |
 
@@ -111,14 +111,14 @@ Retain `FhirValidatorAgent` as an alias for `FhirValidatorService` in the public
 
 ### Negative / trade-offs
 
-- CapabilityStatement is fetched on each service initialization (no caching yet)
+- CapabilityStatement is cached in-memory per process (24-hour default TTL); not shared across processes or hosts
 - Static value sets must be maintained manually for semantic checks
 - Does not validate advanced search features (`_include`, chained searches, etc.)
 - CapabilityStatement may not always reflect true server behavior (trust-but-verify)
 
 ### Follow-up work
 
-- CapabilityStatement caching and refresh policy
+- Persistent or distributed CapabilityStatement cache (Redis, shared disk)
 - Expanded value-set validation
 - Improved error messages with remediation hints
 - See [3-Week Implementation Plan](../../planning/README.md)

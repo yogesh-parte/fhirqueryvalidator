@@ -12,7 +12,7 @@ When `validate_query(url)` is called:
 4. For each query parameter, run structural then semantic checks ([§2.3](#23-structural-validation), [§2.4](#24-semantic-validation))
 5. Return aggregated errors
 
-CapabilityStatement is fetched once at service construction ([§2.2](#22-capabilitystatement-indexing)).
+CapabilityStatement is loaded at service construction via the metadata cache ([§2.2](#22-capabilitystatement-indexing)). Subsequent service instances for the same URL reuse the cached entry until TTL expiry or explicit invalidation.
 
 ## 2. Normative rules
 
@@ -33,15 +33,32 @@ CapabilityStatement is fetched once at service construction ([§2.2](#22-capabil
 
 ### 2.2 CapabilityStatement indexing
 
-**Components:** `infrastructure/capability_index.py`, `core/validator.py`
+**Components:** `infrastructure/capability_index.py`, `infrastructure/capability_cache.py`, `core/validator.py`
 
 #### Metadata fetch
 
-- HTTP GET to `metadata_url`
+- HTTP GET to `metadata_url` when cache miss or cache disabled
 - Request header: `Accept: application/fhir+json`
 - Optional `Authorization: Bearer {token}` when OAuth enabled
 - Timeout: 20 seconds (default)
 - Non-2xx responses propagate as exceptions (not validation errors)
+
+#### Metadata cache
+
+**Component:** `infrastructure/capability_cache.py`
+
+| Rule | Behavior |
+|------|----------|
+| Cache scope | In-memory, per process |
+| Cache key | `metadata_url` + sorted auth headers (e.g. `Authorization`) |
+| Default TTL | 86_400 seconds (24 hours) via `FHIR_CAPABILITY_CACHE_TTL_SECONDS` |
+| Enable/disable | `FHIR_CAPABILITY_CACHE_ENABLED` (default `true`) |
+| TTL expiry | Checked on read; expired entries are removed and metadata is re-fetched |
+| Shared cache | Multiple `FhirValidatorService` instances for the same URL share one entry |
+| Bypass | `load_capability_statement(..., use_cache=False)` skips read and write |
+| Invalidate one URL | `invalidate_capability_cache(url)` removes all auth variants for that URL |
+| Invalidate all | `invalidate_capability_cache()` clears entire cache |
+| Service refresh | `FhirValidatorService.refresh_capability()` invalidates then reloads for `metadata_url` |
 
 #### Index construction
 

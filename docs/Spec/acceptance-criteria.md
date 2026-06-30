@@ -131,6 +131,29 @@ Given/When/Then scenarios for verification. Maps to requirement IDs in [requirem
 - **When** `validate_query(".../Patient?gender=invalid")` is called
 - **Then** `valid` is `false`
 
+## CapabilityStatement cache
+
+### AC-20: Cache reuse within TTL
+
+- **Requirement:** FR-15
+- **Given** a CapabilityStatement for `https://example.com/metadata` is cached with TTL not yet expired
+- **When** `load_capability_statement("https://example.com/metadata")` is called again
+- **Then** the cached JSON is returned without a second HTTP GET
+
+### AC-21: Trigger-based invalidation
+
+- **Requirement:** FR-15
+- **Given** a cached CapabilityStatement for a metadata URL
+- **When** `invalidate_capability_cache(url)` or `service.refresh_capability()` is called
+- **Then** the next fetch performs a new HTTP GET and returns fresh metadata
+
+### AC-22: TTL expiry refetches metadata
+
+- **Requirement:** FR-15
+- **Given** a cached entry older than `FHIR_CAPABILITY_CACHE_TTL_SECONDS`
+- **When** `load_capability_statement(url)` is called
+- **Then** the expired entry is removed and metadata is fetched again
+
 ## Service construction
 
 ### AC-17: from_env loads configuration

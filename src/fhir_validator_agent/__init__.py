@@ -8,6 +8,7 @@ from .config.settings import DEFAULT_PUBLIC_SERVERS, get_auth_config, get_defaul
 from .core.codeset_validator import STATIC_VALUESETS, is_valid_patient_identifier
 from .core.query_parser import parse_fhir_query
 from .core.validator import FhirQueryValidator
+from .infrastructure.capability_cache import invalidate_capability_cache
 from .infrastructure.capability_index import get_auth_headers, load_capability_statement
 from .services.validator_service import FhirValidatorService
 
@@ -23,6 +24,7 @@ __all__ = [
     "get_auth_config",
     "get_auth_headers",
     "get_default_server",
+    "invalidate_capability_cache",
     "get_public_test_server",
     "get_public_test_servers_without_auth",
     "is_valid_patient_identifier",

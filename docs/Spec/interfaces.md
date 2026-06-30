@@ -46,7 +46,7 @@ FhirValidatorService(
 **Side effects on construction:**
 
 1. If `use_auth`, call `get_auth_headers()` (may raise `RuntimeError` on missing config or token failure).
-2. Fetch CapabilityStatement from `metadata_url` via `load_capability_statement()`.
+2. Fetch CapabilityStatement from `metadata_url` via `load_capability_statement()` (uses in-memory cache by default).
 3. Build `FhirQueryValidator` from the returned JSON.
 
 ### `from_env() -> FhirValidatorService`
@@ -64,6 +64,12 @@ FhirValidatorService(
 | Resource type not in CapabilityStatement | `False` | `["Resource type '{type}' is not supported."]` |
 | Structural or semantic failures | `False` | One or more error strings from validator |
 | All checks pass | `True` | `[]` |
+
+### `refresh_capability() -> None`
+
+1. Call `invalidate_capability_cache(self.metadata_url)`.
+2. Re-fetch CapabilityStatement via `load_capability_statement(self.metadata_url, headers=self.headers)`.
+3. Rebuild `FhirQueryValidator` from the new JSON.
 
 ## FhirQueryValidator
 
@@ -127,6 +133,8 @@ Loaded from `config/.env.local` (copy from `config/.env.example`). Never commit 
 | `TOKEN_URL` | — | OAuth token endpoint |
 | `CLIENT_ID` | — | OAuth client ID |
 | `CLIENT_SECRET` | — | OAuth client secret |
+| `FHIR_CAPABILITY_CACHE_ENABLED` | `true` | Enable in-memory CapabilityStatement cache |
+| `FHIR_CAPABILITY_CACHE_TTL_SECONDS` | `86400` | Cache TTL in seconds (24 hours) |
 
 **Resolution order:** `FHIR_METADATA_URL` / `FHIR_SERVER_BASE` env vars override preset URLs from `FHIR_DEFAULT_SERVER_KEY`. Unknown preset keys fall back to `hapi`.
 
@@ -156,12 +164,26 @@ All registered servers have `auth_required: false`.
 
 ### CapabilityStatement fetch
 
-`load_capability_statement(url, headers=None, timeout=20)`:
+`load_capability_statement(url, headers=None, timeout=20, *, use_cache=None, cache=None)`:
 
-- Sends `Accept: application/fhir+json` on every request.
+- Checks in-memory cache first when enabled (keyed by URL + auth headers).
+- On cache miss, sends HTTP GET with `Accept: application/fhir+json`.
 - Merges optional auth headers (e.g. `Authorization: Bearer ...`).
+- Stores successful responses in cache (unless `use_cache=False`).
 - Raises `requests.HTTPError` on non-2xx responses.
 - Returns parsed JSON dict.
+
+### CapabilityStatement cache
+
+`CapabilityStatementCache(ttl_seconds=86400, enabled=True)` — thread-safe in-memory store.
+
+| Function | Returns | Description |
+|----------|---------|-------------|
+| `get_capability_cache()` | `CapabilityStatementCache` | Process-wide singleton (configured from env) |
+| `invalidate_capability_cache(url=None)` | `int` | Remove entries for one URL or clear all; returns count removed |
+| `reset_capability_cache()` | `None` | Reset singleton (testing) |
+
+`CapabilityStatementCache` methods: `get(url, headers)`, `set(url, data, headers)`, `invalidate(url=None)`.
 
 ### OAuth
 
@@ -185,6 +207,7 @@ From `fhir_validator_agent.__init__`:
 | `STATIC_VALUESETS` | Dict |
 | `is_valid_patient_identifier` | Function |
 | `load_capability_statement` | Function |
+| `invalidate_capability_cache` | Function |
 | `get_auth_headers` | Function |
 | `load_env_file` | Function |
 | `resolve_fhir_urls` | Function |

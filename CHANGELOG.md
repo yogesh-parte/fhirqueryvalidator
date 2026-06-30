@@ -2,6 +2,16 @@
 
 All notable changes to this project are documented in this file.
 
+## [Unreleased]
+
+### Added
+
+- In-memory CapabilityStatement cache with configurable TTL (default 24 hours)
+- `invalidate_capability_cache()` for trigger-based cache invalidation (per URL or global)
+- `FhirValidatorService.refresh_capability()` to invalidate and reload metadata for the current server
+- Environment variables `FHIR_CAPABILITY_CACHE_ENABLED` and `FHIR_CAPABILITY_CACHE_TTL_SECONDS`
+- Unit tests for cache TTL, invalidation, and shared cache across service instances
+
 ## [0.1.0] - 2026-06-20
 
 ### Added

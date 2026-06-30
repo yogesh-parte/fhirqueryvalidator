@@ -16,6 +16,7 @@ def test_public_exports():
         "get_auth_config",
         "get_auth_headers",
         "get_default_server",
+        "invalidate_capability_cache",
         "get_public_test_server",
         "get_public_test_servers_without_auth",
         "is_valid_patient_identifier",

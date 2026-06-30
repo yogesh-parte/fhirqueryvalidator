@@ -29,7 +29,7 @@ The server's **CapabilityStatement** (`GET /metadata`) is the primary authority 
 ### In scope (v0.1.0)
 
 - Parse FHIR search URLs into resource type and parameters
-- Fetch and index CapabilityStatement metadata
+- Fetch and index CapabilityStatement metadata (with in-memory TTL cache and trigger-based invalidation)
 - Validate resource types, search params, modifiers, and comparators
 - Apply static value sets and Patient identifier rules
 - Python library (`FhirValidatorService`) and CLI (`fhir-validate`)
@@ -39,7 +39,7 @@ The server's **CapabilityStatement** (`GET /metadata`) is the primary authority 
 
 ### Out of scope
 
-See [requirements.md — Out of Scope](requirements.md#out-of-scope-will-not). Summary: no query execution, no HTTP API, no GenAI, no terminology server lookups, no caching, no chained search validation.
+See [requirements.md — Out of Scope](requirements.md#out-of-scope-will-not). Summary: no query execution, no HTTP API, no GenAI, no terminology server lookups, no chained search validation.
 
 ## 4. System context
 
@@ -66,6 +66,7 @@ flowchart TB
     end
 
     subgraph infra [infrastructure]
+        CapCache[capability_cache]
         CapIndex[capability_index]
     end
 
@@ -81,6 +82,7 @@ flowchart TB
     ValidatorService --> Validator
     Validator --> Parser
     Validator --> Codesets
+    CapIndex --> CapCache
     CapIndex --> FHIRServer
 ```
 
@@ -99,7 +101,7 @@ flowchart LR
 | Step | Component | Spec reference |
 |------|-----------|----------------|
 | Parse URL | `core/query_parser.py` | [behavior.md §2.1](behavior.md#21-url-parsing) |
-| Fetch metadata | `infrastructure/capability_index.py` | [behavior.md §2.2](behavior.md#22-capabilitystatement-indexing) |
+| Fetch metadata | `infrastructure/capability_index.py`, `infrastructure/capability_cache.py` | [behavior.md §2.2](behavior.md#22-capabilitystatement-indexing) |
 | Structural validation | `core/validator.py` | [behavior.md §2.3](behavior.md#23-structural-validation) |
 | Semantic validation | `core/codeset_validator.py` | [behavior.md §2.4](behavior.md#24-semantic-validation) |
 | Orchestration | `services/validator_service.py` | [interfaces.md](interfaces.md) |
@@ -110,7 +112,7 @@ flowchart LR
 |-------|------|----------------|
 | Config | `src/fhir_validator_agent/config/` | Environment loading, public server registry |
 | Core | `src/fhir_validator_agent/core/` | Parsing, validation rules (no HTTP) |
-| Infrastructure | `src/fhir_validator_agent/infrastructure/` | CapabilityStatement fetch, OAuth |
+| Infrastructure | `src/fhir_validator_agent/infrastructure/` | CapabilityStatement fetch, cache, OAuth |
 | Services | `src/fhir_validator_agent/services/` | `FhirValidatorService` orchestration |
 | CLI | `src/fhir_validator_agent/cli.py` | `fhir-validate` entry point |
 

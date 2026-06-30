@@ -2,6 +2,7 @@ from typing import Any
 
 from ..config.settings import get_auth_config, load_env_file, resolve_fhir_urls
 from ..core.validator import FhirQueryValidator
+from ..infrastructure.capability_cache import invalidate_capability_cache
 from ..infrastructure.capability_index import get_auth_headers, load_capability_statement
 
 
@@ -33,6 +34,11 @@ class FhirValidatorService:
             return {"valid": False, "errors": [f"Resource type '{resource_type}' is not supported."]}
         errors = self.validator.validate_fhir_query(resource_type, query_params)
         return {"valid": not bool(errors), "errors": errors}
+
+    def refresh_capability(self) -> None:
+        invalidate_capability_cache(self.metadata_url)
+        self.cap_json = load_capability_statement(self.metadata_url, headers=self.headers)
+        self.validator = FhirQueryValidator(self.cap_json)
 
     @classmethod
     def from_env(cls) -> "FhirValidatorService":

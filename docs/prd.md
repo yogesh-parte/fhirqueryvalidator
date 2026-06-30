@@ -92,6 +92,7 @@ Static rules are intentionally narrow. Structural correctness is delegated to th
 | **Layered** | Config, core logic, infrastructure, and orchestration are separated |
 | **Embeddable** | Usable as a Python library, CLI (`fhir-validate`), or demo notebook |
 | **Testable** | Unit tests use fixture CapabilityStatements; integration tests optionally hit live servers |
+| **Cached metadata** | CapabilityStatement responses cached in-memory (24h default TTL) with trigger-based invalidation |
 
 ---
 
@@ -115,6 +116,7 @@ Static rules are intentionally narrow. Structural correctness is delegated to th
 | FR-12 | CLI entry point (`fhir-validate`) and Python API (`FhirValidatorService`) | P0 |
 | FR-13 | Demo notebook with positive and negative test scenarios | P1 |
 | FR-14 | Unit tests with offline CapabilityStatement fixtures | P0 |
+| FR-15 | Cache CapabilityStatement metadata with configurable TTL and trigger-based invalidation | P1 |
 
 ### 3.2 Non-functional requirements
 
@@ -177,7 +179,7 @@ The following are explicitly **not** part of this product at v0.1.0. They may be
 
 | Item | Rationale |
 |------|-----------|
-| CapabilityStatement caching or TTL policies | Metadata fetched on service init; no cache layer yet |
+| Persistent or distributed metadata cache (Redis, disk, cross-process) | In-memory per-process cache implemented; no shared store |
 | Multi-tenant deployment / hosted SaaS | Consumer library, not a managed service |
 | UI or dashboard | CLI, library, and notebook only |
 
@@ -188,7 +190,7 @@ The following are explicitly **not** part of this product at v0.1.0. They may be
 Items discussed but not committed:
 
 - HTTP API wrapper for microservice deployment
-- CapabilityStatement caching with configurable refresh
+- Persistent or distributed CapabilityStatement cache (Redis, shared disk)
 - Expanded static or dynamic value-set validation via `$validate-code`
 - Google ADK agent that proposes queries and runs them through this validator
 - Support for `_filter` and advanced search features per server

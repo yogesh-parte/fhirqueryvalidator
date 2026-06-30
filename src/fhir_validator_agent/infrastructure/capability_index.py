@@ -1,6 +1,8 @@
 import requests
 from typing import Any
 
+from .capability_cache import CapabilityStatementCache, get_capability_cache
+
 
 def get_auth_headers(use_auth: bool, token_url: str, client_id: str, client_secret: str) -> dict[str, str]:
     if not use_auth:
@@ -25,8 +27,28 @@ def get_auth_headers(use_auth: bool, token_url: str, client_id: str, client_secr
 FHIR_JSON_HEADERS = {"Accept": "application/fhir+json"}
 
 
-def load_capability_statement(url: str, headers: dict[str, str] | None = None, timeout: int = 20) -> dict[str, Any]:
+def load_capability_statement(
+    url: str,
+    headers: dict[str, str] | None = None,
+    timeout: int = 20,
+    *,
+    use_cache: bool | None = None,
+    cache: CapabilityStatementCache | None = None,
+) -> dict[str, Any]:
+    cache_instance = cache or get_capability_cache()
+    should_use_cache = cache_instance.enabled if use_cache is None else use_cache
+
+    if should_use_cache:
+        cached = cache_instance.get(url, headers)
+        if cached is not None:
+            return cached
+
     request_headers = {**FHIR_JSON_HEADERS, **(headers or {})}
     response = requests.get(url, headers=request_headers, timeout=timeout)
     response.raise_for_status()
-    return response.json()
+    capability_statement = response.json()
+
+    if should_use_cache:
+        cache_instance.set(url, capability_statement, headers)
+
+    return capability_statement

@@ -35,7 +35,7 @@ fhir-validate "https://hapi.fhir.org/baseR4/Patient?gender=male"
 src/fhir_validator_agent/
 ├── config/           # Environment settings and public server registry
 ├── core/             # Query parsing, validation rules, static value sets
-├── infrastructure/   # HTTP: CapabilityStatement fetch, OAuth
+├── infrastructure/   # HTTP: CapabilityStatement fetch, cache, OAuth
 ├── services/         # FhirValidatorService orchestration
 └── cli.py            # fhir-validate entry point
 ```
@@ -44,8 +44,27 @@ src/fhir_validator_agent/
 |-------|----------------|
 | `config/` | `settings.py`, `public_servers.py` |
 | `core/` | Pure logic — no HTTP |
-| `infrastructure/` | External I/O |
+| `infrastructure/` | External I/O, CapabilityStatement cache |
 | `services/` | Wires layers together |
+
+## CapabilityStatement cache (development)
+
+Metadata is cached in-memory by default (24-hour TTL). During development:
+
+```python
+from fhir_validator_agent import invalidate_capability_cache
+
+# Force fresh metadata after server changes
+invalidate_capability_cache("https://hapi.fhir.org/baseR4/metadata")
+```
+
+Or disable caching in `config/.env.local`:
+
+```env
+FHIR_CAPABILITY_CACHE_ENABLED=false
+```
+
+See [configuration.md](configuration.md) for all cache-related environment variables.
 
 ## Running tests
 

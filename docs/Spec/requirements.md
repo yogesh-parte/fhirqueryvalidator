@@ -7,7 +7,7 @@ Formal requirement IDs with verification hooks. Product context lives in the [PR
 | ID | Requirement | Priority | Spec section | Implementation | Test evidence |
 |----|-------------|----------|--------------|----------------|---------------|
 | FR-01 | Parse a FHIR search URL into resource type and query parameters | P0 | [behavior §2.1](behavior.md#21-url-parsing) | `core/query_parser.py` | `tests/unit/test_query_parser.py` (7 tests) |
-| FR-02 | Fetch and parse a server's CapabilityStatement from `/metadata` | P0 | [behavior §2.2](behavior.md#22-capabilitystatement-indexing) | `infrastructure/capability_index.py` | `tests/unit/test_capability_index.py` (7 tests) |
+| FR-02 | Fetch and parse a server's CapabilityStatement from `/metadata` | P0 | [behavior §2.2](behavior.md#22-capabilitystatement-indexing) | `infrastructure/capability_index.py` | `tests/unit/test_capability_index.py` (10 tests) |
 | FR-03 | Validate resource type against server-declared supported types | P0 | [behavior §2.3](behavior.md#23-structural-validation) | `core/validator.py`, `services/validator_service.py` | `tests/unit/test_validator.py`, `tests/unit/test_service.py` |
 | FR-04 | Validate search parameters against server-declared params per resource | P0 | [behavior §2.3](behavior.md#23-structural-validation) | `core/validator.py` | `tests/unit/test_validator.py`, regression cases |
 | FR-05 | Validate modifiers and comparators from CapabilityStatement extensions | P0 | [behavior §2.3](behavior.md#23-structural-validation) | `core/validator.py` | `tests/unit/test_validator.py`, regression cases |
@@ -19,7 +19,8 @@ Formal requirement IDs with verification hooks. Product context lives in the [PR
 | FR-11 | Optional OAuth client-credentials for protected metadata endpoints | P1 | [behavior §2.2](behavior.md#22-capabilitystatement-indexing) | `infrastructure/capability_index.py` | `tests/unit/test_capability_index.py` |
 | FR-12 | CLI entry point (`fhir-validate`) and Python API (`FhirValidatorService`) | P0 | [interfaces](interfaces.md) | `cli.py`, `services/validator_service.py` | `tests/unit/test_cli.py`, `tests/unit/test_service.py` |
 | FR-13 | Demo notebook with positive and negative test scenarios | P1 | [spec §7](spec.md#7-entry-points) | `examples/notebooks/FHIR_search_validator_demo.ipynb` | Manual E2E (see [e2e-checklist](../e2e-checklist.md)) |
-| FR-14 | Unit tests with offline CapabilityStatement fixtures | P0 | [traceability](traceability.md) | `tests/conftest.py`, `tests/unit/` | `pytest -m "not integration"` (85 offline tests) |
+| FR-14 | Unit tests with offline CapabilityStatement fixtures | P0 | [traceability](traceability.md) | `tests/conftest.py`, `tests/unit/` | `pytest -m "not integration"` (104 offline tests) |
+| FR-15 | Cache CapabilityStatement metadata with configurable TTL and trigger-based invalidation | P1 | [behavior §2.2](behavior.md#22-capabilitystatement-indexing) | `infrastructure/capability_cache.py`, `config/settings.py` | `tests/unit/test_capability_cache.py`, `tests/unit/test_settings_cache.py`, `tests/unit/test_capability_index.py`, `tests/unit/test_service.py` |
 
 ## Non-functional requirements
 
@@ -41,7 +42,7 @@ Explicit non-requirements. These must not be implemented without a new requireme
 | OOS-03 | Google ADK / GenAI agent orchestration | Deferred |
 | OOS-04 | Live ValueSet / CodeSystem lookups via Terminology Server | Static value sets used instead |
 | OOS-05 | Complete FHIR R4 search specification enforcement | CapabilityStatement is the authority |
-| OOS-06 | CapabilityStatement caching or TTL policies | Metadata fetched on service init |
+| OOS-06 | Persistent or distributed cache (Redis, disk, cross-process) | In-memory per-process cache only |
 | OOS-07 | Chained search, `_include`, `_revinclude` validation | Not in v0.1.0 |
 | OOS-08 | `_sort`, `_count`, `_summary`, `_elements` validation | Special query modifiers not in scope |
 | OOS-09 | Multi-tenant deployment / hosted SaaS | Consumer library only |

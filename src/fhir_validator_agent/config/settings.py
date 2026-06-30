@@ -45,3 +45,20 @@ def get_auth_config() -> tuple[bool, str, str, str]:
         os.getenv("CLIENT_ID", ""),
         os.getenv("CLIENT_SECRET", ""),
     )
+
+
+def get_capability_cache_ttl_seconds() -> int:
+    raw_value = os.getenv("FHIR_CAPABILITY_CACHE_TTL_SECONDS", "86400")
+    try:
+        ttl_seconds = int(raw_value)
+    except ValueError as exc:
+        raise ValueError(
+            f"FHIR_CAPABILITY_CACHE_TTL_SECONDS must be an integer number of seconds, got {raw_value!r}"
+        ) from exc
+    if ttl_seconds < 0:
+        raise ValueError("FHIR_CAPABILITY_CACHE_TTL_SECONDS must be zero or positive")
+    return ttl_seconds
+
+
+def get_capability_cache_enabled() -> bool:
+    return os.getenv("FHIR_CAPABILITY_CACHE_ENABLED", "true").lower() in {"1", "true", "yes"}

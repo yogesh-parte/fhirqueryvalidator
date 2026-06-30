@@ -21,6 +21,40 @@ Edit `config/.env.local` as needed. The validator loads this file automatically 
 | `TOKEN_URL` | — | If auth enabled | OAuth token endpoint |
 | `CLIENT_ID` | — | If auth enabled | OAuth client ID |
 | `CLIENT_SECRET` | — | If auth enabled | OAuth client secret |
+| `FHIR_CAPABILITY_CACHE_ENABLED` | `true` | No | Enable in-memory CapabilityStatement cache |
+| `FHIR_CAPABILITY_CACHE_TTL_SECONDS` | `86400` | No | Cache TTL in seconds (24 hours) |
+
+## CapabilityStatement cache
+
+The validator caches `/metadata` responses in-memory to reduce network calls when validating multiple queries against the same server within a single process.
+
+```env
+FHIR_CAPABILITY_CACHE_ENABLED=true
+FHIR_CAPABILITY_CACHE_TTL_SECONDS=86400
+```
+
+| Setting | Effect |
+|---------|--------|
+| `FHIR_CAPABILITY_CACHE_ENABLED=false` | Every `load_capability_statement()` call fetches fresh metadata |
+| `FHIR_CAPABILITY_CACHE_TTL_SECONDS=0` | Entries expire on the next read (no effective reuse across calls) |
+| Shorter TTL (e.g. `3600`) | Refresh metadata at most once per hour |
+
+### Trigger-based invalidation
+
+Invalidate cache programmatically when you know server capabilities have changed:
+
+```python
+from fhir_validator_agent import invalidate_capability_cache, FhirValidatorService
+
+# Drop cache for one server
+invalidate_capability_cache("https://hapi.fhir.org/baseR4/metadata")
+
+# Or refresh a running service
+service = FhirValidatorService.from_env()
+service.refresh_capability()
+```
+
+Cache is **per-process**. Restarting Python clears all entries. Entries with different `Authorization` headers are cached separately.
 
 ## Public test servers (no authentication)
 

@@ -47,7 +47,7 @@ gantt
 ### Delivered highlights
 
 - Layered package, CLI (`fhir-validate`), 4 public no-auth servers
-- 85 offline tests + 9 integration tests, 98% coverage on core/services
+- 104 offline tests + 9 integration tests, 98% coverage on core/services
 - Docs: PRD, ADR, **Spec (SDD)**, configuration, development, API, sample output, e2e checklist
 - CI workflow (`.github/workflows/ci.yml`), LICENSE, CONTRIBUTING, CHANGELOG
 
@@ -88,4 +88,4 @@ gantt
 
 ## Out of scope
 
-Per the [PRD](../docs/prd.md#4-out-of-scope): HTTP API, Google ADK/GenAI, terminology server lookups, CapabilityStatement caching, chained search / `_include` validation.
+Per the [PRD](../docs/prd.md#4-out-of-scope): HTTP API, Google ADK/GenAI, terminology server lookups, persistent/distributed metadata cache, chained search / `_include` validation.

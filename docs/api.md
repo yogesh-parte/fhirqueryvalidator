@@ -25,6 +25,14 @@ Loads `config/.env.local`, resolves server preset and OAuth settings.
 service = FhirValidatorService.from_env()
 ```
 
+### `refresh_capability() -> None`
+
+Invalidates the cached CapabilityStatement for this service's `metadata_url` and reloads it from the server. Rebuilds the internal `FhirQueryValidator` with the fresh metadata.
+
+```python
+service.refresh_capability()
+```
+
 ### `validate_query(query_url: str) -> dict`
 
 | Field | Type | Description |
@@ -113,9 +121,33 @@ Keys: `hapi`, `firely`, `spark`, `wildfhir`
 
 ## Infrastructure
 
-### `load_capability_statement(url, headers=None, timeout=20) -> dict`
+### `load_capability_statement(url, headers=None, timeout=20, *, use_cache=None, cache=None) -> dict`
 
-Fetches CapabilityStatement JSON. Sends `Accept: application/fhir+json`.
+Fetches CapabilityStatement JSON. Sends `Accept: application/fhir+json`. Results are cached in-memory by default (keyed by URL and auth headers) with a configurable TTL.
+
+```python
+from fhir_validator_agent import load_capability_statement
+
+# Uses global cache (enabled by default, 24h TTL)
+cap = load_capability_statement("https://hapi.fhir.org/baseR4/metadata")
+
+# Bypass cache for a single fetch
+cap = load_capability_statement("https://hapi.fhir.org/baseR4/metadata", use_cache=False)
+```
+
+### `invalidate_capability_cache(url=None) -> int`
+
+Trigger-based cache invalidation. Returns the number of entries removed.
+
+```python
+from fhir_validator_agent import invalidate_capability_cache
+
+# Invalidate one metadata URL (all auth header variants)
+invalidate_capability_cache("https://hapi.fhir.org/baseR4/metadata")
+
+# Invalidate entire cache
+invalidate_capability_cache()
+```
 
 ### `get_auth_headers(use_auth, token_url, client_id, client_secret) -> dict`
 

@@ -5,7 +5,8 @@ Release readiness checklist for v0.1.0. Last verified: **2026-06-20**.
 | Step | Command / action | Pass? |
 |------|------------------|-------|
 | Clean install | `pip install -e ".[dev,notebook]"` | ✅ |
-| Unit + regression tests | `pytest -m "not integration"` | ✅ (85 passed) |
+| Unit + regression tests | `pytest -m "not integration"` | ✅ (104 passed) |
+| CapabilityStatement cache | `pytest tests/unit/test_capability_cache.py -v` | ✅ |
 | Coverage ≥ 80% | `make test-cov` | ✅ (98%) |
 | CLI valid query | `fhir-validate "https://hapi.fhir.org/baseR4/Patient?gender=male"` | ✅ |
 | CLI invalid query | `fhir-validate "https://hapi.fhir.org/baseR4/Patient?gender=fe"` | ✅ |
